@@ -301,6 +301,10 @@ class RecordIndexer(object):
         data['_updated'] = pytz.utc.localize(record.updated).isoformat() \
             if record.updated else None
 
+        collection, version = doc_type.rsplit('-v', 1)
+        data['_collection'] = collection
+        data['_collection_version'] = version
+
         # Allow modification of data prior to sending to Elasticsearch.
         before_record_index.send(
             current_app._get_current_object(),
